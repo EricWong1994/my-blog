@@ -1,14 +1,19 @@
 
-import { Button, message } from 'antd';
+import { Button, Input, message } from 'antd';
 import type {NextPage} from 'next'
 import Link from 'next/link'
 import {useRouter} from 'next/router'
+import { ChangeEvent, useState } from 'react';
 import request from 'service/fetch';
 import { navs } from './config';
 import styles from './index.module.scss'
 
 const Navbar: NextPage = () => {
   const router = useRouter();
+  const [userInfo, setUserInfo] = useState({
+    name: '',
+    phone: ''
+  });
   const {pathname} = router;
 
   const handleGotoEditorPage = () => {
@@ -21,7 +26,8 @@ const Navbar: NextPage = () => {
 
   const handleLogin = () => {
     request.post('./api/sendVerifyCode', {
-      to: '19933273217',
+      // to: '19933273217',
+      to: userInfo.phone,
       templateId: 1
     }).then(res => {
       console.log('res: ', res);
@@ -30,6 +36,12 @@ const Navbar: NextPage = () => {
       } else {
         message.error(res?.message || '未知错误')
       }
+    })
+  }
+  const inputChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
+    setUserInfo({
+      ...userInfo,
+      phone: e.target.value
     })
   }
 
@@ -47,21 +59,10 @@ const Navbar: NextPage = () => {
       </section>
       <section className={styles.operationArea}>
         <Button onClick={handleGotoEditorPage}>写文章</Button>
-
-        {/* {userId ? (
-          <>
-            <Dropdown overlay={renderDropDownMenu()} placement="bottomLeft">
-              <Avatar src={avatar} size={32} />
-            </Dropdown>
-          </>
-        ) : (
-          <Button type="primary" onClick={handleLogin}>
-            登录
-          </Button>
-        )} */}
         <Button type="primary" onClick={handleLogin}>
             登录
-          </Button>
+        </Button>
+        <Input value={userInfo.phone} onChange={inputChangeHandler}></Input>
       </section>
     </div>
   )
