@@ -1,7 +1,7 @@
 import type {NextPage} from 'next'
 const Footer: NextPage = () => {
   return (
-    <div>Footer</div>
+    <div>页脚</div>
   )
 }
 
