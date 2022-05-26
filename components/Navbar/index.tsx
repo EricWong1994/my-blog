@@ -29,7 +29,7 @@ const Navbar: NextPage = () => {
       // to: '19933273217',
       to: userInfo.phone,
       templateId: 1
-    }).then(res => {
+    }).then((res: any) => {
       console.log('res: ', res);
       if (res?.code === 0) {
         console.log('没问题')
